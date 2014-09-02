@@ -3,9 +3,20 @@ var url = require('url');
 var fs = require('fs');
 var path = require('path');
 var _ = require('underscore')._;
+var handlebars = require('handlebars');
 
 var pathToReports = './reports';
 var publicHTML = './viewer';
+
+handlebars.registerHelper('equal', function(lvalue, rvalue, options) {
+    if (arguments.length < 3)
+        throw new Error("Handlebars Helper equal needs 2 parameters");
+    if( lvalue!=rvalue ) {
+        return options.inverse(this);
+    } else {
+        return options.fn(this);
+    }
+});
 
 function serveStatic(file, res){
     fs.readFile(file, function(err, data){
@@ -217,6 +228,7 @@ var formatResults = function(input) {
         var results = _.filter(input, function(h) {
             return JSON.stringify(resultRoles(h)) === JSON.stringify(rs)
         });
+        var specs2show = [];
         results = _.map(results, function(h) {
             var success = 0;
             var failure = 0;
@@ -227,20 +239,25 @@ var formatResults = function(input) {
                                                 var res = _.map(tests, function (t) {
                                                     return testResult(h.results.examples, t);
                                                 });
+                                                bfail = failure;
                                                 failure += _.reduce(res,
                                                                     function (memo, r) {
                                                                         return memo + ((r.status === "failed")?1:0);
                                                                     }, 0);
+                                                if (bfail != failure) { specs2show.push(spec) };
                                                 success += _.reduce(res,
                                                                     function (memo, r) {
                                                                         return memo + ((r.status === "passed")?1:0);
                                                                     }, 0);
                                                 //only failures
                                                 //res = _.filter(res, function(r){ return r.status == "failed"; });
+                                                var show = 0;
                                                 return _.map(res, function(r) {
+                                                //    if (_.contains(specs2show, spec)) {show = 1};
                                                     return {
                                                         "role": role,
                                                         "spec": spec,
+                                                        "show": show,
                                                         "test": r
                                                     };
                                                 })
@@ -252,6 +269,8 @@ var formatResults = function(input) {
                      "color": successColor(success, failure),
                      "results": _.flatten(rr) };
         });
+
+        specs = _.filter(specs, function(spec) { return _.contains(specs2show, spec.name) });
 
         var success = _.reduce(results, function(memo, r) { return memo + r.success }, 0);
         var failure = _.reduce(results, function(memo, r) { return memo + r.failure }, 0);
@@ -288,7 +307,13 @@ var server = http.createServer(function(req,res){
        if (err) throw err;
        data = JSON.parse(data);
        data.tests = formatResults(data.tests);
-       res.end(JSON.stringify(data));       
+       fs.readFile(__dirname + '/report.handlebars', function(err,html){
+         var template = handlebars.compile(html.toString());
+         var rendered = template(data);
+         res.writeHead(200, { 'Content-Type': 'text/html' });
+         res.end(rendered);
+       });
+//       res.end(JSON.stringify(data));       
      });
    } else if(incoming.pathname == '/'){
      serveStatic(publicHTML + '/index.html', res);
