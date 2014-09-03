@@ -1,0 +1,29 @@
+{
+  "name": "serverspec",
+  "version": "1.0.0",
+  "description": "nodejs based viewer for serverspec reports",
+  "main": "server.js",
+  "dependencies": {
+    "javascript-natural-sort": "^0.7.1",
+    "handlebars": "^2.0.0-beta.1",
+    "underscore": "^1.6.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gooddata/cure-qa/"
+  },
+  "keywords": [
+    "testing",
+    "qa",
+    "infra",
+    "serverspec",
+    "awesomeness"
+  ],
+  "author": "Yury Tsarev",
+  "license": "WTFPL"
+}

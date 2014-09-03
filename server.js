@@ -4,6 +4,7 @@ var fs = require('fs');
 var path = require('path');
 var _ = require('underscore')._;
 var handlebars = require('handlebars');
+var naturalSort = require('javascript-natural-sort');
 
 var pathToReports = './reports';
 var publicHTML = './viewer';
@@ -16,6 +17,24 @@ handlebars.registerHelper('equal', function(lvalue, rvalue, options) {
     } else {
         return options.fn(this);
     }
+});
+
+_.mixin({
+ 
+  sortByNat: function(obj, value, context) {
+      var iterator = _.isFunction(value) ? value : function(obj){ return obj[value]; };
+      return _.pluck(_.map(obj, function(value, index, list) {
+        return {
+          value: value,
+          index: index,
+          criteria: iterator.call(context, value, index, list)
+        };
+      }).sort(function(left, right) {
+        var a = left.criteria;
+        var b = right.criteria;
+        return naturalSort(a, b);
+      }), 'value');
+  }
 });
 
 function serveStatic(file, res){
@@ -268,11 +287,14 @@ var formatResults = function(input) {
         });
 
         specs = _.filter(specs, function(spec) { return _.contains(specs2show, spec.name) });
+
         _.each(results, function(host_result){
           host_result.results = _.filter(host_result.results, function(r){
             return _.contains(specs2show, r.spec);
           });
         });
+
+        results = _.sortByNat(results, function(host_result) {return host_result.name});
 
         var success = _.reduce(results, function(memo, r) { return memo + r.success }, 0);
         var failure = _.reduce(results, function(memo, r) { return memo + r.failure }, 0);
