@@ -251,13 +251,10 @@ var formatResults = function(input) {
                                                                     }, 0);
                                                 //only failures
                                                 //res = _.filter(res, function(r){ return r.status == "failed"; });
-                                                var show = 0;
                                                 return _.map(res, function(r) {
-                                                //    if (_.contains(specs2show, spec)) {show = 1};
                                                     return {
                                                         "role": role,
                                                         "spec": spec,
-                                                        "show": show,
                                                         "test": r
                                                     };
                                                 })
@@ -271,6 +268,11 @@ var formatResults = function(input) {
         });
 
         specs = _.filter(specs, function(spec) { return _.contains(specs2show, spec.name) });
+        _.each(results, function(host_result){
+          host_result.results = _.filter(host_result.results, function(r){
+            return _.contains(specs2show, r.spec);
+          });
+        });
 
         var success = _.reduce(results, function(memo, r) { return memo + r.success }, 0);
         var failure = _.reduce(results, function(memo, r) { return memo + r.failure }, 0);
