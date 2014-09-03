@@ -6,69 +6,62 @@
     <title>Test results</title>
 
     <link rel="stylesheet" href="https://google-code-prettify.googlecode.com/svn/trunk/src/prettify.css">
-    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular.min.js"></script>
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.10.0/ui-bootstrap-tpls.min.js"></script>
-
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="stylesheets/report.css">
-
-    <script src="scripts/report.js"></script>
 
   </head>
   <body>
-      <tabset>
-        {{#tests}}
-        <tab>
-          <tab-heading>
-            {{name}}
-            {{#if percent}}
-            <span class="badge">
-              {{percent}}%
-            </span>
-            {{/if}}
-          </tab-heading>
-          <div class="outer-results">
-            <div class="inner-results">
-              <table class="results">
-                <tr class="specs">
-                  <td>&nbsp;</td>
-                  {{#specs}}
-                  <td colspan="{{ tests }}">
-                    {{ name }}
-                    {{ failed_tests }}
-                  </td>
-                  {{/specs}}
-                </tr>
-                {{#results}}
-                <tr>
-                  <td class="hostname" style="border-left-color:{{color}}">
-                    {{ name }}
-                  </td>
-                  {{#results}}
-                    <td class="test status-{{test.status}}">
-                      <span>
-                        {{show}}
-                        {{#equal test.status 'passed'}}
-                          ✓
-                        {{/equal}}
-                        {{#equal test.status 'failed'}}
-                          ✗
-                        {{/equal}}
-                      </span>
-                    </td>
-                  {{/results}}
-                  {{#unless result.results.length}}
-                  <td class="test" style="border: none"><span>&nbsp;</span></td>
-                  {{/unless}}
-                </tr>
-                {{/results}}
-              </table>
-            </div>
-          </div>
-        </tab>
-        {{/tests}}
-      </tabset>
+    {{#tests}}
+     <h4 class="text-center">
+        {{name}}
+        {{#if percent}}
+        <span class="badge">
+          {{percent}}%
+        </span>
+        {{/if}}
+      </h4>
+      <div class="outer-results">
+        <div class="inner-results">
+          <table class="results">
+            <tr class="specs">
+              <td>&nbsp;</td>
+              {{#specs}}
+              <td colspan="{{ tests }}">
+                {{ name }}
+                {{ failed_tests }}
+              </td>
+              {{/specs}}
+            </tr>
+            {{#results}}
+            <tr>
+              <td class="hostname" style="border-left-color:{{color}}">
+                {{ name }}
+              </td>
+              {{#results}}
+                <td class="test status-{{test.status}}">
+                  <span>
+                    {{show}}
+                    {{#equal test.status 'passed'}}
+                      ✓
+                    {{/equal}}
+                    {{#equal test.status 'failed'}}
+                      ✗
+                    {{/equal}}
+                  </span>
+                </td>
+              {{/results}}
+              {{#unless result.results.length}}
+              <td class="test" style="border: none"><span>&nbsp;</span></td>
+              {{/unless}}
+            </tr>
+            {{/results}}
+          </table>
+        </div>
+      </div>
+    {{/tests}}
     <!-- Template for modal dialog with test details -->
     <script type="text/ng-template" id="details.html">
         <div class="modal-header">

@@ -19,6 +19,10 @@ handlebars.registerHelper('equal', function(lvalue, rvalue, options) {
     }
 });
 
+handlebars.registerHelper('json', function(context) {
+      return JSON.stringify(context);
+});
+
 _.mixin({
  
   sortByNat: function(obj, value, context) {
@@ -279,7 +283,7 @@ var formatResults = function(input) {
                                                 })
                                             });
                            });
-            return { "name": h.hostname.split(".").slice(0,3).join("."),
+            return { "name": h.hostname,
                      "success": success,
                      "failure": failure,
                      "color": successColor(success, failure),
@@ -299,7 +303,7 @@ var formatResults = function(input) {
         var success = _.reduce(results, function(memo, r) { return memo + r.success }, 0);
         var failure = _.reduce(results, function(memo, r) { return memo + r.failure }, 0);
         var percent = success + failure;
-        percent = percent?(Math.round(success * 100 / percent)):null;
+        percent = percent?(Math.floor(success * 100 / percent)):null;
         output.push({"name": rs.name,
                      "roles": roles,
                      "percent": percent,
