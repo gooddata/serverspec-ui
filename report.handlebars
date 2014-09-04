@@ -7,10 +7,12 @@
 
     <link rel="stylesheet" href="https://google-code-prettify.googlecode.com/svn/trunk/src/prettify.css">
     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="stylesheets/report.css">
 
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="stylesheets/report.css">
+    <script src="https://google-code-prettify.googlecode.com/svn/trunk/src/prettify.js"></script>
+    <script src="scripts/report.js"></script>
 
   </head>
   <body>
@@ -31,19 +33,57 @@
               {{#specs}}
               <td colspan="{{ tests }}">
                 {{ name }}
-                {{ failed_tests }}
               </td>
               {{/specs}}
+              {{#unless specs.length }}
+                Seems that all tests are passing. Strange. Wow.
+              {{/unless}}
             </tr>
             {{#results}}
             <tr>
               <td class="hostname" style="border-left-color:{{color}}">
                 {{ name }}
               </td>
-              {{#results}}
-                <td class="test status-{{test.status}}">
-                  <span>
-                    {{show}}
+              {{#each this.results}}
+              <td class="test status-{{test.status}}"
+              {{#if test.exception}}
+              data-toggle="modal" data-target="#{{escape_dots ../../name}}_test_{{@index}}"
+              {{/if}}>
+          {{#if test.exception}}
+          <!-- Template for modal dialog with test details -->
+          <div id="{{../../name}}_test_{{@index}}" class="modal fade"
+            tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                      <h3>{{../../name}}</h3>
+                  </div>
+                  <div class="modal-body">
+                    <dl>
+                      <dt>Host</dt>
+                      <dd>{{../../name}}</dd>
+                      <dt>Location</dt>
+                      <dd>{{test.file_path}}:{{test.line_number}}</dd>
+                      <dt>Status</dt>
+                      <dd class="status-{{test.status}}">{{test.status}}</dd>
+                      <dt>Description</dt>
+                      <dd>{{ test.full_description }}</dd>
+                    </dl>
+                    <prettyprint></prettyprint>
+                    <div class="exception">
+                      <h4>{{test.exception.class}}:{{test.exception.message}}</h4>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                      <button class="btn btn-primary">OK</button>
+                  </div>
+               </div>
+             </div>
+           </div>
+           <!-- /modal -->
+           {{/if}}
+                  <span data-toggle="tooltip"
+                        title="{{ test.full_description }}">
                     {{#equal test.status 'passed'}}
                       ✓
                     {{/equal}}
@@ -52,7 +92,7 @@
                     {{/equal}}
                   </span>
                 </td>
-              {{/results}}
+              {{/each}}
               {{#unless result.results.length}}
               <td class="test" style="border: none"><span>&nbsp;</span></td>
               {{/unless}}
@@ -62,31 +102,6 @@
         </div>
       </div>
     {{/tests}}
-    <!-- Template for modal dialog with test details -->
-    <script type="text/ng-template" id="details.html">
-        <div class="modal-header">
-            <h3>{{hostname}}</h3>
-        </div>
-        <div class="modal-body">
-          <dl>
-            <dt>Host</dt>
-            <dd>{{hostname}}</dd>
-            <dt>Location</dt>
-            <dd once-text="file_path + ':' + line_number"></dd>
-            <dt>Status</dt>
-            <dd once-class="'status-' + status" once-text="status"></dd>
-            <dt>Description</dt>
-            <dd once-text="description"></dd>
-          </dl>
-          <prettyprint></prettyprint>
-          <div class="exception" once-if="exception">
-            <h4 once-text="exception.class + ':' + exception.message"></h4>
-            <span ng-repeat="line in exception.backtrace" once-text="line"></span>
-          </div>
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-primary" ng-click="ok()">OK</button>
-        </div>
-    </script>
+
   </body>
 </html>

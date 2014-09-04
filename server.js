@@ -23,6 +23,10 @@ handlebars.registerHelper('json', function(context) {
       return JSON.stringify(context);
 });
 
+handlebars.registerHelper('escape_dots', function(context) {
+      return context.replace(/\./g, "\\.");
+});
+
 _.mixin({
  
   sortByNat: function(obj, value, context) {
@@ -316,6 +320,24 @@ var formatResults = function(input) {
 
     return output;
 }
+
+function extractSources(result, source) {
+// Extract the appropriate source snippet.
+var file = result.test.file_path;
+var start = result.test.line_number;
+var end = result.test.line_number;
+// We search for the first blank lines followed by a non-idented line
+while (start > 1 &&
+  (source[start - 1] !== "" ||
+  (source[start] || "").match(/^\s/) !== null)) start--;
+while (source[end - 1] !== undefined &&
+  (source[end - 1] !== "" ||
+  (source[end - 2] || "").match(/^\s/) !== null)) end++;
+start++; end--;
+return {
+      "start": start,
+      "snippet": source.slice(start - 1, end)}
+};
 
 
 var server = http.createServer(function(req,res){
