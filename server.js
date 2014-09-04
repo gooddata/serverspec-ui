@@ -27,6 +27,10 @@ handlebars.registerHelper('escape_dots', function(context) {
       return context.replace(/\./g, "\\.");
 });
 
+handlebars.registerHelper('tooltip', function(context) {
+      if (context) { return context.replace(/\//g, "/\u200d") }
+});
+
 _.mixin({
  
   sortByNat: function(obj, value, context) {

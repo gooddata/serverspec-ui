@@ -44,6 +44,8 @@
               <td class="hostname" style="border-left-color:{{color}}">
                 {{ name }}
               </td>
+              <!-- Take care of context to be able to refer to ../../ and not lose it within if statement
+              See http://jsfiddle.net/aK4ja/-->
               {{#each this.results}}
               <td class="test status-{{test.status}}"
               {{#if test.exception}}
@@ -51,9 +53,9 @@
               {{/if}}>
           {{#if test.exception}}
           <!-- Template for modal dialog with test details -->
-          <div id="{{../../name}}_test_{{@index}}" class="modal fade"
+          <div id="{{../../name}}_test_{{@index}}" class="modal"
             tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
+            <div class="modal-dialog modal-lg">
               <div class="modal-content">
                 <div class="modal-header">
                       <h3>{{../../name}}</h3>
@@ -83,7 +85,8 @@
            <!-- /modal -->
            {{/if}}
                   <span data-toggle="tooltip"
-                        title="{{ test.full_description }}">
+                        data-placement="left"
+                        title="{{tooltip test.full_description }}">
                     {{#equal test.status 'passed'}}
                       ✓
                     {{/equal}}
