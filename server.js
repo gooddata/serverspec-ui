@@ -66,6 +66,9 @@ function serveStatic(file, res){
 // Format results to display them more effectively
 var formatResults = function(input) {
 
+  var sources = input.sources;
+  var input = input.tests;
+
   console.log("Formatting results");
 
   // Input is something like that:
@@ -237,11 +240,12 @@ var formatResults = function(input) {
       return t.join(":");
     }));
 
-    function extractSources(result, source) {
+    function extractSources(result, sources) {
       // Extract the appropriate source snippet.
-      var file = result.test.file_path;
-      var start = result.test.line_number;
-      var end = result.test.line_number;
+      var file = result.file_path;
+      var start = result.line_number;
+      var end = result.line_number;
+      var source = sources[file];
       // We search for the first blank lines followed by a non-idented line
       while (start > 1 &&
           (source[start - 1] !== "" ||
@@ -252,7 +256,7 @@ var formatResults = function(input) {
       start++; end--;
       return {
         "start": start,
-          "snippet": source.slice(start - 1, end)}
+        "snippet": source.slice(start - 1, end).join("\n")}
     };
     // List of roles with the number of tests
     var roles = _.map(_.groupBy(tests, function(t) { return t[0]; }),
@@ -300,10 +304,13 @@ var formatResults = function(input) {
               //only failures
               //res = _.filter(res, function(r){ return r.status == "failed"; });
               return _.map(res, function(r) {
+                var source = "";
+                if (r.status == "failed") { source = extractSources(r, sources) }
                 return {
                   "role": role,
                      "spec": spec,
-                     "test": r
+                     "test": r,
+                     "source": source
                 };
               })
             });
@@ -360,7 +367,7 @@ var server = http.createServer(function(req,res){
     fs.readFile(pathToReports + incoming.pathname, function(err,data){
       if (err) throw err;
       data = JSON.parse(data);
-      data.tests = formatResults(data.tests);
+      data.tests = formatResults(data);
       fs.readFile(__dirname + '/report.handlebars', function(err,html){
         var template = handlebars.compile(html.toString());
         var rendered = template(data);

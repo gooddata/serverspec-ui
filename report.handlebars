@@ -5,13 +5,12 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <title>Test results</title>
 
-<link rel="stylesheet" href="https://google-code-prettify.googlecode.com/svn/trunk/src/prettify.css">
 <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 <link rel="stylesheet" href="stylesheets/report.css">
 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-<script src="https://google-code-prettify.googlecode.com/svn/trunk/src/prettify.js"></script>
+<script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js?skin=desert"></script>
 <script src="scripts/report.js"></script>
 
 </head>
@@ -71,7 +70,7 @@
                     <dt>Description</dt>
                     <dd>{{ test.full_description }}</dd>
                   </dl>
-                  <prettyprint></prettyprint>
+                    <pre class="prettyprint linenums codechunk">{{../source.snippet}}</pre>
                   <div class="exception">
                     <h4>{{test.exception.class}}:{{test.exception.message}}</h4>
                   </div>
