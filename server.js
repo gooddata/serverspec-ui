@@ -387,7 +387,7 @@ var server = http.createServer(function(req,res){
             data.files.push(name);
           }
         });
-
+        data.files = data.files.reverse();
         var template = handlebars.compile(html.toString());
         var rendered = template(data);
         res.writeHead(200, { 'Content-Type': 'text/html' });
