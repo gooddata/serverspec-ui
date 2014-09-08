@@ -402,4 +402,4 @@ var server = http.createServer(function(req,res){
   }
 });
 
-server.listen(process.argv[2]);
+server.listen(process.env.PORT || 3000);
