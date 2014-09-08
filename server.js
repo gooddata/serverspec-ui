@@ -7,7 +7,7 @@ var handlebars = require('handlebars');
 var naturalSort = require('javascript-natural-sort');
 
 var pathToReports = './reports';
-var publicHTML = './viewer';
+var publicHTML = './public';
 
 handlebars.registerHelper('equal', function(lvalue, rvalue, options) {
   if (arguments.length < 3)
