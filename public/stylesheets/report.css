@@ -164,7 +164,7 @@ dd.status-passed {
     font-size: 1em;
     font-weight: normal;
     font-style: italic;
-    white-space: pre;
+    white-space: wrap;
 }
 .exception span {
     font-family: monospace;
