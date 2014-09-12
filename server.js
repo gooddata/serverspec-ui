@@ -358,13 +358,18 @@ var server = http.createServer(function(req,res){
     function recurse() {
       fs.readFile(pathToReports + incoming.pathname + '.parsed', function(err,data){
         if (err) {console.log(err);
-          var data = fs.readFileSync(pathToReports + incoming.pathname);
-          data = JSON.parse(data);
-          data.tests = formatResults(data);
-          fs.writeFileSync(pathToReports + incoming.pathname + '.parsed',
-            JSON.stringify(data));
-          console.log('Reformatting json...');
-          recurse();
+          var data = fs.readFile(pathToReports + incoming.pathname, function(err,data){
+            if (err) {
+              res.writeHead(404, { 'Content-Type': 'text/plain' });
+              res.end('Report not found');
+              return }
+            data = JSON.parse(data);
+            data.tests = formatResults(data);
+            fs.writeFileSync(pathToReports + incoming.pathname + '.parsed',
+              JSON.stringify(data));
+            console.log('Reformatting json...');
+            recurse();
+          });
         } else {
           data = JSON.parse(data);
           fs.readFile(__dirname + '/report.handlebars', function(err,html){
