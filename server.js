@@ -387,7 +387,10 @@ var server = http.createServer(function(req,res){
             data.files.push(name);
           }
         });
-        data.files = data.files.reverse();
+        data.files = data.files.sort(function(a,b){
+          return fs.statSync(pathToReports + '/' + b).mtime.getTime() -
+                 fs.statSync(pathToReports + '/' + a).mtime.getTime();
+          });
         var template = handlebars.compile(html.toString());
         var rendered = template(data);
         res.writeHead(200, { 'Content-Type': 'text/html' });
