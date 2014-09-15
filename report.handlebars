@@ -17,11 +17,13 @@
 <body>
 {{#tests}}
 <h4 class="text-center">
-  {{name}}
   {{#if percent}}
-  <span class="badge">
-    {{percent}}%
-  </span>
+    {{name}}
+    <span class="badge">
+      {{percent}}%
+    </span>
+  {{else}}
+    There was a connection problem to the hosts below. Check ssh host keys.
   {{/if}}
 </h4>
 <div class="outer-results">
@@ -35,7 +37,9 @@
         </td>
         {{/specs}}
         {{#unless specs.length }}
-        Seems that all tests are passing. Strange. Wow.
+          {{#if percent}}
+            Seems that all tests are passing. Strange. Wow.
+          {{/if}}
         {{/unless}}
       </tr>
       {{#results}}
