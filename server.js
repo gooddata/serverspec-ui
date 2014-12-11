@@ -5,6 +5,8 @@ var path = require('path');
 var _ = require('underscore')._;
 var handlebars = require('handlebars');
 var naturalSort = require('javascript-natural-sort');
+var Convert = require('ansi-to-html');
+var convert = new Convert();
 
 var pathToReports = './reports';
 var publicHTML = './public';
@@ -29,6 +31,10 @@ handlebars.registerHelper('escape_dots', function(context) {
 
 handlebars.registerHelper('tooltip', function(context) {
   if (context) { return context.replace(/\//g, "/\u200d") }
+});
+
+handlebars.registerHelper('ansi', function(context) {
+  if (context) { return convert.toHtml(context); }
 });
 
 _.mixin({
