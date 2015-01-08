@@ -390,22 +390,32 @@ var server = http.createServer(function(req,res){
     recurse();
   } else if(incoming.pathname == '/'){
     fs.readFile(__dirname + '/index.handlebars', function(err,html){
-      fs.readdir(pathToReports, function(err, files){
-        var data = {};
-        data.files = [];
-        files.forEach(function(name){
-          if(path.extname(name) == '.json'){
-            data.files.push(name);
-          }
-        });
-        data.files = data.files.sort(function(a,b){
-          return fs.statSync(pathToReports + '/' + b).mtime.getTime() -
-                 fs.statSync(pathToReports + '/' + a).mtime.getTime();
+      res.writeHead(200, { 'Content-Type': 'text/html' });
+      fs.exists(pathToReports, function(exists) {
+        if (exists) {
+          fs.readdir(pathToReports, function(err, files){
+            var data = {};
+            data.files = [];
+            files.forEach(function(name){
+              if(path.extname(name) == '.json'){
+                data.files.push(name);
+              }
+            });
+            if ( data.files.length > 0 ) {
+              data.files = data.files.sort(function(a,b){
+                return fs.statSync(pathToReports + '/' + b).mtime.getTime() -
+                       fs.statSync(pathToReports + '/' + a).mtime.getTime();
+                });
+              var template = handlebars.compile(html.toString());
+              var rendered = template(data);
+              res.end(rendered);
+            } else {
+              res.end("There are no reports around yet...");
+            }
           });
-        var template = handlebars.compile(html.toString());
-        var rendered = template(data);
-        res.writeHead(200, { 'Content-Type': 'text/html' });
-        res.end(rendered);
+        } else {
+          res.end("There are no reports around yet...");
+        }
       });
     });
   } else if(/(\.js$|\.css$|\.html$)/.test(incoming.pathname)){
