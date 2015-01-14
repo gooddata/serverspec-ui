@@ -147,9 +147,9 @@ var formatResults = function(input) {
 
   // Get example identifier (role, spec, line number)
   var exampleIdentifier = function (e) {
-    var matches = e.file_path.match(/^\.\/spec\/([^\/]+)\/([^\/]+)_spec\.rb$/);
+    var matches = e.file_path.match(/^\.\/spec\/([^\/]+)\/([^\/]+)\/([^\/]+)_spec\.rb$/);
     if (matches) {
-      return [ matches[1], matches[2], e.line_number, e.full_description ];
+      return [ matches[2], matches[3], e.line_number, e.full_description, matches[1] ];
     }
   };
 
