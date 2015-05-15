@@ -50,44 +50,47 @@
         <!-- Take care of context to be able to refer to ../../ and not lose it within if statement
               See http://jsfiddle.net/aK4ja/-->
         {{#each this.results}}
+        {{#if test.exception}}
+        <!-- Template for modal dialog with test details -->
+        <div id="{{../../name}}_test_{{@index}}" class="modal fade"
+          tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+                <h3>{{../../name}}</h3>
+              </div>
+              <div class="modal-body">
+                <dl>
+                  <dt>Host</dt>
+                  <dd>{{../../name}}</dd>
+                  <dt>Location</dt>
+                  <dd>{{test.file_path}}:{{test.line_number}}</dd>
+                  <dt>Status</dt>
+                  <dd class="status-{{test.status}}">{{test.status}}</dd>
+                  <dt>Description</dt>
+                  <dd>{{ test.full_description }}</dd>
+                </dl>
+                  <pre class="prettyprint linenums">{{../source.snippet}}</pre>
+                <div class="exception">
+                  <h4>{{test.exception.class}}</h4>
+                  <pre class="bg-warning">{{{ansi test.exception.message}}}</pre>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button class="btn btn-primary" data-dismiss="modal">OK</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /modal -->
+        {{/if}}
         <td class="test status-{{test.status}}"
           {{#if test.exception}}
           data-toggle="modal" data-target="#{{escape_dots ../../name}}_test_{{@index}}"
           {{/if}}>
-          {{#if test.exception}}
-          <!-- Template for modal dialog with test details -->
-          <div id="{{../../name}}_test_{{@index}}" class="modal"
-            tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h3>{{../../name}}</h3>
-                </div>
-                <div class="modal-body">
-                  <dl>
-                    <dt>Host</dt>
-                    <dd>{{../../name}}</dd>
-                    <dt>Location</dt>
-                    <dd>{{test.file_path}}:{{test.line_number}}</dd>
-                    <dt>Status</dt>
-                    <dd class="status-{{test.status}}">{{test.status}}</dd>
-                    <dt>Description</dt>
-                    <dd>{{ test.full_description }}</dd>
-                  </dl>
-                    <pre class="prettyprint linenums">{{../source.snippet}}</pre>
-                  <div class="exception">
-                    <h4>{{test.exception.class}}</h4>
-                    <pre class="bg-warning">{{{ansi test.exception.message}}}</pre>
-                  </div>
-                </div>
-                <div class="modal-footer">
-                  <button class="btn btn-primary">OK</button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- /modal -->
-          {{/if}}
           <span data-toggle="tooltip"
             data-placement="left"
             title="{{tooltip test.full_description }}">
