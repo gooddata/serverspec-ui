@@ -18,13 +18,19 @@
 {{#tests}}
 <h4 class="text-center">
   {{#if percent}}
-    {{name}}
-    <span class="badge">
-      {{percent}}%
-    </span>
+  {{name}}
+  <span class="badge"
+    data-toggle="tooltip"
+    data-placement="right"
+    title="All tests:
+{{#all_specs}}
+{{name}}
+{{/all_specs}}">
+      {{failure}}/{{success}} {{percent}}%
   {{else}}
     There was a connection problem to the hosts below. Check ssh host keys.
   {{/if}}
+  </span>
 </h4>
 <div class="outer-results">
   <div class="inner-results">

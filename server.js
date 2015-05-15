@@ -328,6 +328,7 @@ var formatResults = function(input) {
       "results": _.flatten(rr) };
     });
 
+    all_specs = specs;
     specs = _.filter(specs, function(spec) { return _.contains(specs2show, spec.name) });
 
     _.each(results, function(host_result){
@@ -348,6 +349,7 @@ var formatResults = function(input) {
       "success": success,
       "failure": failure,
       "specs": specs,
+      "all_specs": all_specs,
       "results": results,
       "tests": tests.length});
   });
