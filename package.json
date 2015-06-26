@@ -16,7 +16,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/gooddata/cure-qa/"
+    "url": "https://github.com/gooddata/serverspec-ui/"
   },
   "keywords": [
     "testing",
