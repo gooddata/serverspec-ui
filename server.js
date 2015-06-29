@@ -8,7 +8,7 @@ var naturalSort = require('javascript-natural-sort');
 var Convert = require('ansi-to-html');
 var convert = new Convert();
 
-var pathToReports = process.env.REPORTS_PATH || './reports';
+var pathToReports = process.env.REPORTS_DIR || './reports';
 var pathToSpec = process.env.SPEC_DIR || './spec';
 var publicHTML = './public';
 

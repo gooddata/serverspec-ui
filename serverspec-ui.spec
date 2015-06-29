@@ -3,7 +3,7 @@
 Name:             serverspec-ui
 Summary:          GoodData ServerSpec integration UI
 Version:          1.0
-Release:          4.gdc
+Release:          5.gdc
 
 Vendor:           GoodData
 Group:            GoodData/Tools
@@ -53,6 +53,9 @@ GoodData ServerSpec integration - UI package
 
 
 %changelog
+* Mon Jun 29 2015 Radek Smidl <radek.smidl@gooddata.com> 1.0-5.gdc
+- REPORTS_PATH renamed to REPORTS_DIR
+
 * Mon Jun 29 2015 Radek Smidl <radek.smidl@gooddata.com> 1.0-4.gdc
 - SPEC_DIR support added
 
