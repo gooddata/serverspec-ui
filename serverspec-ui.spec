@@ -3,7 +3,7 @@
 Name:             serverspec-ui
 Summary:          GoodData ServerSpec integration UI
 Version:          1.0
-Release:          1.gdc
+Release:          2.gdc
 
 Vendor:           GoodData
 Group:            GoodData/Tools
@@ -53,5 +53,9 @@ GoodData ServerSpec integration - UI package
 
 
 %changelog
+* Mon Jun 29 2015 Radek Smidl <radek.smidl@gooddata.com> 1.0-2.gdc
+- NODE_PATH added to init script
+- support for sysconfig added
+
 * Fri Jun 26 2015 Radek Smidl <radek.smidl@gooddata.com> 1.0-1.gdc
 - Initial rpmbuild

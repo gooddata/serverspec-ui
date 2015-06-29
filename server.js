@@ -8,7 +8,7 @@ var naturalSort = require('javascript-natural-sort');
 var Convert = require('ansi-to-html');
 var convert = new Convert();
 
-var pathToReports = './reports';
+var pathToReports = process.env.REPORTS_PATH || './reports';
 var publicHTML = './public';
 
 handlebars.registerHelper('equal', function(lvalue, rvalue, options) {
