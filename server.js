@@ -8,7 +8,8 @@ var naturalSort = require('javascript-natural-sort');
 var Convert = require('ansi-to-html');
 var convert = new Convert();
 
-var pathToReports = process.env.REPORTS_PATH || './reports';
+var pathToReports = process.env.REPORTS_DIR || './reports';
+var pathToSpec = process.env.SPEC_DIR || './spec';
 var publicHTML = './public';
 
 handlebars.registerHelper('equal', function(lvalue, rvalue, options) {
@@ -67,6 +68,10 @@ function serveStatic(file, res){
     res.writeHead(200, { 'Content-Type': mimeType });
     res.end(data);
   });
+};
+
+function escapeRegExp(str) {
+  return (str+'').replace(/[.?*+^$[\]\\(){}|-]/g, "\\$&");
 };
 
 // Format results to display them more effectively
@@ -147,7 +152,7 @@ var formatResults = function(input) {
 
   // Get example identifier (role, spec, line number)
   var exampleIdentifier = function (e) {
-    var matches = e.file_path.match(/^\.\/spec\/([^\/]+)\/([^\/]+)\/([^\/]+)_spec\.rb$/);
+    var matches = e.file_path.match('^' + escapeRegExp(path.join(pathToSpec, '/')) + '([^\/]+)\/([^\/]+)\/([^\/]+)_spec\.rb$');
     if (matches) {
       return [ matches[2], matches[3], e.line_number, e.full_description, matches[1] ];
     }
