@@ -36,3 +36,10 @@ There is no config file, all the settings are propagated via environment vars.
 You can set where to listen with `PORT` (default *3000*) and `LISTEN` (defaults to *127.0.0.1*).
 
 Also you can you set `REPORTS_DIR` and `SPEC_DIR` to overwrite default locations.
+
+Maintenance level
+-----------------
+
+This project is in the maintenance mode.
+
+The patches are going to be provided by engineers at GoodData Inc. in reactive manner.
