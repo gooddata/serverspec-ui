@@ -8,7 +8,7 @@ Release:          5.gdc
 Vendor:           GoodData
 Group:            GoodData/Tools
 
-License:          Gooddata proprietary
+License:          ISC
 URL:              https://github.com/gooddata/serverspec-ui
 Source0:          sources.tar
 BuildArch:        noarch
