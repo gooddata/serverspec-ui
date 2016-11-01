@@ -3,7 +3,7 @@
 Name:             serverspec-ui
 Summary:          GoodData ServerSpec integration UI
 Version:          1.0
-Release:          5{?dist}.gdc
+Release:          5%{?dist}.gdc
 
 Vendor:           GoodData
 Group:            GoodData/Tools
