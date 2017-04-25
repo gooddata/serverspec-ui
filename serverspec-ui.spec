@@ -3,7 +3,7 @@
 Name:             serverspec-ui
 Summary:          GoodData ServerSpec integration UI
 Version:          1.0
-Release:          5.gdc
+Release:          6%{?dist}.gdc
 
 Vendor:           GoodData
 Group:            GoodData/Tools
@@ -53,6 +53,10 @@ GoodData ServerSpec integration - UI package
 
 
 %changelog
+* Tue Apr 25 2017 Martin Surovcak <martin.surovcak@gooddata.com> 1.0-6.gdc
+- prettify moved to github
+- allow building GDC EL7 packages
+
 * Mon Jun 29 2015 Radek Smidl <radek.smidl@gooddata.com> 1.0-5.gdc
 - REPORTS_PATH renamed to REPORTS_DIR
 
