@@ -5,7 +5,7 @@
   "main": "server.js",
   "dependencies": {
     "javascript-natural-sort": "^0.7.1",
-    "handlebars": "^2.0.0-beta.1",
+    "handlebars": "^4.0.5",
     "underscore": "^1.6.0",
     "ansi-to-html": "~0.3.0"
   },
